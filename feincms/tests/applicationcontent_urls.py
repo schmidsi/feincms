@@ -5,6 +5,7 @@ This is a dummy module used to test the ApplicationContent
 from django import template
 from django.conf.urls.defaults import *
 from django.http import HttpResponse, HttpResponseRedirect
+from django.template import Context
 
 
 def module_root(request):
@@ -26,7 +27,7 @@ def raises(request):
 
 def fragment(request):
     t = template.Template('{% load applicationcontent_tags %}{% fragment request "something" %}some things{% endfragment %}')
-    return t.render({'request': request})
+    return t.render(Context({'request': request}))
 
 
 def redirect(request):

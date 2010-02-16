@@ -135,10 +135,12 @@ class ChangeList(main.ChangeList):
                 ) for lft, rght, tree_id in \
                     self.query_set.values_list('lft', 'rght', 'tree_id')]
             if clauses:
-                self.query_set = self.model._default_manager.filter(reduce(lambda p, q: p|q, clauses))
+                self.query_set = self.model._default_manager.filter(reduce(
+                    lambda p, q: p|q, clauses))
+            else:
+                self.query_set = self.model._default_manager.all()
 
         return super(ChangeList, self).get_results(request)
-main.ChangeList = ChangeList
 
 # ------------------------------------------------------------------------
 # MARK: -
@@ -183,7 +185,7 @@ class TreeEditor(admin.ModelAdmin):
             r = '''<span onclick="return page_tree_handler('%d')" id="page_marker-%d"
             class="page_marker" style="width: %dpx;">&nbsp;</span>&nbsp;''' % (
                 item.id, item.id, 14+item.level*18)
-                
+
 #        r += '<span tabindex="0">'
         if hasattr(item, 'short_title'):
             r += item.short_title()
